@@ -3,263 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev.nexus | The Infinite Origin</title>
+    <title>Dev.nexus | Official</title>
     <style>
         @import url('https://fonts.googleapis.com');
 
         :root {
+            --bg: #050508;
+            --text: #ffffff;
             --accent: #00f2ff;
-            --purple: #7000ff;
-            --bg-color: #05050a;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --text-color: #ffffff;
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --card: rgba(255, 255, 255, 0.03);
+            --transition-speed: 2.5s; /* じわ〜っと変わる速度 */
         }
 
-        /* ライトモードの定義（滑らかな遷移のためにプロパティを統一） */
         body.light-mode {
-            --bg-color: #e0e5ec;
-            --card-bg: rgba(255, 255, 255, 0.7);
-            --text-color: #1a1a2e;
+            --bg: #f5f7fa;
+            --text: #1a1a2e;
             --accent: #7000ff;
-            --glass-border: rgba(0, 0, 0, 0.1);
+            --card: rgba(0, 0, 0, 0.05);
         }
 
-        /* 全要素に滑らかな色遷移を適用 */
+        /* 滑らかな遷移のコア設定 */
         * {
-            transition: background-color 2.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                        color 1.5s ease, 
-                        border-color 1.5s ease, 
-                        box-shadow 1.5s ease;
+            transition: background-color var(--transition-speed) ease, 
+                        color var(--transition-speed) ease, 
+                        border-color var(--transition-speed) ease,
+                        box-shadow var(--transition-speed) ease;
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%;
-            background-color: var(--bg-color);
+            background-color: var(--bg);
             font-family: 'Noto Sans JP', sans-serif;
-            color: var(--text-color);
+            color: var(--text);
             overflow-x: hidden;
         }
 
-        #canvas {
+        #starCanvas {
             position: fixed; top: 0; left: 0; z-index: 1;
-            mix-blend-mode: screen; pointer-events: none;
+            pointer-events: none;
         }
 
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, var(--bg-color) 100%);
-            z-index: 2; pointer-events: none;
+        .ui-layer { position: relative; z-index: 10; width: 100%; }
+
+        /* スイッチボタン */
+        .mode-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            background: var(--card); border: 1px solid var(--accent);
+            color: var(--text); padding: 8px 16px; border-radius: 4px;
+            font-family: 'Orbitron', sans-serif; font-size: 0.7rem;
+            cursor: pointer; backdrop-filter: blur(10px);
+            letter-spacing: 1px;
         }
 
-        .content-wrapper { position: relative; z-index: 10; width: 100%; }
-
-        /* モード切替スイッチ */
-        .theme-btn {
-            position: fixed; top: 30px; right: 30px; z-index: 100;
-            padding: 12px 24px; border-radius: 50px;
-            background: var(--card-bg); border: 2px solid var(--accent);
-            color: var(--text-color); font-family: 'Orbitron', sans-serif;
-            font-weight: 900; cursor: pointer; backdrop-filter: blur(10px);
-            box-shadow: 0 0 15px var(--accent);
-        }
-        .theme-btn:hover { transform: scale(1.1); box-shadow: 0 0 25px var(--accent); }
-
-        /* メインビジュアル */
         .hero {
-            height: 100vh; display: flex; flex-direction: column;
+            height: 80vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; text-align: center;
         }
 
-        .logo-container { position: relative; }
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(3rem, 12vw, 8rem);
-            font-weight: 900; letter-spacing: 15px; margin: 0;
-            background: linear-gradient(to right, var(--accent), var(--purple));
+            font-size: clamp(2rem, 8vw, 4rem); /* 文字を小さめに調整 */
+            letter-spacing: 8px; margin: 0;
+            background: linear-gradient(90deg, var(--accent), #7000ff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 30px var(--accent));
-            animation: pulse 4s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 30px var(--accent)); }
-            50% { transform: scale(1.02); filter: drop-shadow(0 0 50px var(--purple)); }
+        .subtitle { font-size: 0.8rem; letter-spacing: 3px; opacity: 0.7; margin-top: 10px; }
+
+        /* 運営一覧 */
+        .section-title {
+            font-family: 'Orbitron', sans-serif; font-size: 1.2rem;
+            text-align: center; margin-bottom: 40px; letter-spacing: 4px;
         }
 
-        /* 運営カード */
-        .staff-section { padding: 100px 20px; text-align: center; }
         .staff-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px; max-width: 1200px; margin: 50px auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px; max-width: 1000px; margin: 0 auto; padding: 0 20px 100px;
         }
 
         .card {
-            background: var(--card-bg); border-radius: 30px; padding: 40px;
-            border: 1px solid var(--glass-border); backdrop-filter: blur(20px);
-            position: relative; overflow: hidden;
-            transition: 0.5s transform cubic-bezier(0.2, 1, 0.3, 1);
-        }
-        .card:hover {
-            transform: translateY(-20px) scale(1.02);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            background: var(--card); border: 1px solid rgba(128,128,128,0.1);
+            border-radius: 12px; padding: 25px; text-align: center;
+            backdrop-filter: blur(10px);
         }
 
-        /* 画像修正：GitHubのraw画像が正しく読み込めるようにスタイルを固定 */
-        .avatar-frame {
-            width: 140px; height: 140px; margin: 0 auto 20px;
-            border-radius: 50%; padding: 5px;
-            background: linear-gradient(45deg, var(--accent), var(--purple));
-        }
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
         .avatar {
-            width: 100%; height: 100%; border-radius: 50%;
-            object-fit: cover; background: #000;
-            display: block; /* 確実に表示 */
+            width: 90px; height: 90px; border-radius: 50%;
+            object-fit: cover; margin-bottom: 15px;
+            border: 2px solid var(--accent);
+            background: #000; /* 読み込み前の背景 */
         }
 
-        .badge {
-            font-size: 0.7rem; font-weight: 900; padding: 5px 15px;
-            border-radius: 50px; text-transform: uppercase; color: #fff;
-            display: inline-block; margin-bottom: 10px;
+        .role-tag {
+            font-size: 0.6rem; font-weight: bold; text-transform: uppercase;
+            padding: 3px 10px; border-radius: 4px; color: #fff; margin-bottom: 10px;
+            display: inline-block;
         }
-        .owner-bg { background: #ff4757; box-shadow: 0 0 10px #ff4757; }
-        .admin-bg { background: #ffa502; box-shadow: 0 0 10px #ffa502; }
-        .dev-bg { background: #2ed573; box-shadow: 0 0 10px #2ed573; }
+        .owner { background: #e91e63; }
+        .admin { background: #ff9800; }
+        .dev { background: #00c853; }
 
-        .name { font-size: 1.6rem; font-weight: 900; margin: 10px 0; font-family: 'Orbitron', sans-serif; }
-        .quote { font-size: 0.9rem; opacity: 0.8; font-style: italic; line-height: 1.6; }
+        .name { font-size: 1rem; font-weight: 700; margin: 5px 0; font-family: 'Orbitron', sans-serif; }
+        .comment { font-size: 0.75rem; opacity: 0.8; line-height: 1.5; margin-top: 10px; }
 
-        .discord-link {
-            display: inline-block; margin-top: 40px; padding: 20px 60px;
-            background: #5865F2; color: #fff; text-decoration: none;
-            border-radius: 15px; font-weight: 900; letter-spacing: 2px;
+        .discord-btn {
+            display: inline-block; padding: 12px 30px; background: #5865F2;
+            color: #fff; text-decoration: none; border-radius: 4px;
+            font-size: 0.8rem; font-weight: bold; margin-top: 20px;
             transition: 0.3s;
         }
-        .discord-link:hover { background: #4752c4; transform: translateY(-5px); box-shadow: 0 10px 30px #5865F2; }
+        .discord-btn:hover { background: #4752c4; transform: scale(1.05); }
 
     </style>
 </head>
 <body>
 
-    <button class="theme-btn" onclick="toggleTheme()">COLOR PHASE</button>
-    <canvas id="canvas"></canvas>
-    <div class="overlay"></div>
+    <button class="mode-toggle" onclick="toggleMode()">SWITCH MODE</button>
+    <canvas id="starCanvas"></canvas>
 
-    <div class="content-wrapper">
+    <div class="ui-layer">
         <section class="hero">
-            <div class="logo-container">
-                <h1 class="logo">Dev.nexus</h1>
-            </div>
-            <p style="letter-spacing: 5px; opacity: 0.7;">BEYOND THE DIGITAL FRONTIER</p>
-            <a href="https://discord.gg" target="_blank" class="discord-link">DISCORDへ参加</a>
+            <h1 class="logo">Dev.nexus</h1>
+            <p class="subtitle">Next Generation Development</p>
+            <a href="https://discord.gg" target="_blank" class="discord-btn">JOIN DISCORD</a>
         </section>
 
-        <section class="staff-section">
-            <h2 style="font-family: 'Orbitron', sans-serif; font-size: 2.5rem;">CORE COMMANDERS</h2>
+        <section>
+            <h2 class="section-title">MANAGEMENT</h2>
             <div class="staff-grid">
-                
                 <!-- Owner -->
                 <div class="card">
-                    <span class="badge owner-bg">Founder & Owner</span>
-                    <div class="avatar-frame">
-                        <img src="https://raw.githubusercontent.com" class="avatar" alt="bananeko345">
-                    </div>
+                    <span class="role-tag owner">Owner</span><br>
+                    <img src="https://raw.githubusercontent.com" class="avatar" alt="bananeko345">
                     <div class="name">bananeko345</div>
-                    <p class="quote">「鯖主頑張ります！」</p>
+                    <p class="comment">鯖主頑張ります！</p>
                 </div>
 
                 <!-- Admin 1 -->
                 <div class="card">
-                    <span class="badge admin-bg">Bot & Server Admin</span>
-                    <div class="avatar-frame">
-                        <img src="https://raw.githubusercontent.com" class="avatar" alt="lapius">
-                    </div>
+                    <span class="role-tag admin">Admin</span><br>
+                    <img src="https://raw.githubusercontent.com" class="avatar" alt="lapius">
                     <div class="name">lapius</div>
-                    <p class="quote">「discordBOTやマイクラサーバーを作れます」</p>
+                    <p class="comment">discordBOTやマイクラサーバーを作れます</p>
                 </div>
 
                 <!-- Admin 2 -->
                 <div class="card">
-                    <span class="badge admin-bg">Management Admin</span>
-                    <div class="avatar-frame">
-                        <img src="https://raw.githubusercontent.com" class="avatar" alt="蓮斗">
-                    </div>
+                    <span class="role-tag admin">Admin</span><br>
+                    <img src="https://raw.githubusercontent.com" class="avatar" alt="蓮斗">
                     <div class="name">蓮斗</div>
-                    <p class="quote">「それなりに頑張ります」</p>
+                    <p class="comment">それなりに頑張ります</p>
                 </div>
 
-                <!-- Dev -->
+                <!-- Developer -->
                 <div class="card">
-                    <span class="badge dev-bg">Lead Developer</span>
-                    <div class="avatar-frame">
-                        <img src="https://raw.githubusercontent.com" class="avatar" alt="jion">
-                    </div>
+                    <span class="role-tag dev">Developer</span><br>
+                    <img src="https://raw.githubusercontent.com" class="avatar" alt="jion">
                     <div class="name">jion</div>
-                    <p class="quote">「足を引っ張らないよう精一杯頑張ります」</p>
+                    <p class="comment">足を引っ張らないよう精一杯頑張ります</p>
                 </div>
-
             </div>
         </section>
-
-        <footer style="padding: 100px; text-align: center; opacity: 0.5; font-size: 0.8rem;">
-            &copy; 2024 Dev.nexus Project. All Rights Reserved.
-        </footer>
     </div>
 
     <script>
-        const canvas = document.getElementById('canvas');
+        const canvas = document.getElementById('starCanvas');
         const ctx = canvas.getContext('2d');
         let width, height, stars;
 
-        // 背景切り替え（超滑らか版）
-        function toggleTheme() {
+        function toggleMode() {
             document.body.classList.toggle('light-mode');
         }
 
         class Star {
-            constructor() { this.init(); }
+            constructor() {
+                this.init();
+            }
             init() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2;
-                this.speed = Math.random() * 0.5 + 0.2; // ゆっくりしたスピード
+                this.size = Math.random() * 1.5;
+                this.speed = Math.random() * 0.3 + 0.1; // ゆっくりした動き
+            }
+            draw() {
+                const color = getComputedStyle(document.body).getPropertyValue('--accent');
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
             update() {
                 this.y -= this.speed;
                 if (this.y < 0) this.init();
             }
-            draw() {
-                const color = getComputedStyle(document.body).getPropertyValue('--accent');
-                ctx.fillStyle = color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
         }
 
-        function setup() {
+        function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            stars = Array.from({ length: 200 }, () => new Star());
+            stars = Array.from({ length: 150 }, () => new Star());
         }
 
-        function loop() {
+        function animate() {
             ctx.clearRect(0, 0, width, height);
             stars.forEach(s => { s.update(); s.draw(); });
-            requestAnimationFrame(loop);
+            requestAnimationFrame(animate);
         }
 
-        // 画像読み込みエラー時の対策
-        document.querySelectorAll('.avatar').forEach(img => {
-            img.onerror = function() {
-                this.src = "https://ui-avatars.com" + this.alt + "&background=random";
-            };
-        });
-
-        window.addEventListener('resize', setup);
-        setup();
-        loop();
+        window.addEventListener('resize', resize);
+        resize();
+        animate();
     </script>
 </body>
 </html>

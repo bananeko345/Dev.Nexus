@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev.nexus | Official Site</title>
+    <title>Dev.nexus | The Ultimate Evolution</title>
     <style>
         @import url('https://fonts.googleapis.com');
 
@@ -13,234 +13,228 @@
             --owner: #ff4757;
             --admin: #ffa502;
             --dev: #2ed573;
-            /* ダークモード用変数 */
+            /* ダークモード初期値 */
             --bg-color: #020205;
-            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-bg: rgba(255, 255, 255, 0.03);
             --text-color: #ffffff;
-            --star-color: rgba(0, 242, 255, 1);
+            --star-color: 0, 242, 255;
+            --nebula: rgba(112, 0, 255, 0.15);
         }
 
-        /* ライトモード用設定 */
         body.light-mode {
-            --bg-color: #ffffff;
+            --bg-color: #f0f2f5;
             --card-bg: rgba(0, 0, 0, 0.05);
             --text-color: #1a1a1a;
-            --star-color: rgba(112, 0, 255, 0.6);
+            --star-color: 112, 0, 255;
+            --nebula: rgba(0, 242, 255, 0.1);
         }
 
+        * { transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), color 1s ease, border-color 1s ease; }
+
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
+            margin: 0; padding: 0; width: 100%;
             background-color: var(--bg-color);
             font-family: 'Exo 2', sans-serif;
             color: var(--text-color);
             overflow-x: hidden;
-            transition: background-color 0.5s ease;
         }
 
-        /* 背景切り替えボタン */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: var(--card-bg);
-            border: 1px solid var(--accent);
-            color: var(--text-color);
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
-            transition: 0.3s;
-            pointer-events: auto;
+        /* 背景：オーロラエフェクト */
+        .nebula {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, var(--nebula), transparent 70%);
+            z-index: 1; pointer-events: none;
         }
 
-        .theme-toggle:hover {
-            background: var(--accent);
-            color: #000;
-        }
+        #canvas { position: fixed; top: 0; left: 0; z-index: 2; mix-blend-mode: screen; }
 
-        #canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
+        .content-layer { position: relative; z-index: 10; width: 100%; }
 
-        .content-layer {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* モード切替スイッチ（カスタムデザイン） */
+        .theme-switch {
+            position: fixed; top: 30px; right: 30px; z-index: 100;
+            width: 60px; height: 30px; background: var(--card-bg);
+            border: 2px solid var(--accent); border-radius: 20px;
+            cursor: pointer; display: flex; align-items: center; padding: 5px;
         }
+        .switch-dot {
+            width: 22px; height: 22px; background: var(--accent);
+            border-radius: 50%; transition: 0.5s transform cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        body.light-mode .switch-dot { transform: translateX(30px); }
 
+        /* ヒーローセクション */
         .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+            height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
         }
 
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 900;
-            letter-spacing: 10px;
+            font-size: clamp(3.5rem, 12vw, 7rem);
+            font-weight: 900; letter-spacing: 15px;
             background: linear-gradient(135deg, var(--accent), var(--purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.5));
-            margin: 0;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(var(--star-color), 0.5));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .typewriter {
+            font-size: 1.2rem; height: 1.5rem; letter-spacing: 4px;
+            margin-top: 10px; color: var(--accent); font-weight: bold;
         }
 
         .btn-join {
-            margin-top: 2rem;
-            padding: 15px 40px;
-            background: #5865F2;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: 0.3s;
-            box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
-            pointer-events: auto;
+            margin-top: 3rem; padding: 20px 50px;
+            background: linear-gradient(45deg, #5865F2, #4752c4);
+            color: white; text-decoration: none; border-radius: 10px;
+            font-weight: 900; letter-spacing: 2px;
+            box-shadow: 0 10px 40px rgba(88, 101, 242, 0.4);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .btn-join:hover { transform: scale(1.1) rotate(-2deg); box-shadow: 0 15px 50px #5865F2; }
 
-        .staff-section {
-            padding: 100px 20px;
-            max-width: 1200px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            margin-bottom: 50px;
-            border-bottom: 2px solid var(--accent);
-            display: inline-block;
-        }
-
+        /* スタッフカード（3Dエフェクト用） */
+        .staff-section { padding: 150px 20px; text-align: center; }
         .staff-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            width: 100%;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px; max-width: 1200px; margin: 0 auto;
+            perspective: 1000px;
         }
 
         .staff-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(128, 128, 128, 0.2);
-            border-radius: 20px;
-            padding: 30px;
-            transition: 0.4s;
+            background: var(--card-bg); border-radius: 25px; padding: 40px;
+            border: 1px solid rgba(var(--star-color), 0.1);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            transition: transform 0.1s ease, box-shadow 0.3s ease, border-color 0.5s ease;
+            transform-style: preserve-3d;
         }
-
-        .staff-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-        }
+        .staff-card:hover { border-color: var(--accent); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
 
         .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            border: 3px solid var(--accent);
-            object-fit: cover;
+            width: 130px; height: 130px; border-radius: 50%;
+            border: 4px solid var(--accent); object-fit: cover;
+            margin-bottom: 20px; transition: 0.5s;
+            transform: translateZ(30px);
         }
+        .staff-card:hover .avatar { transform: translateZ(60px) scale(1.1); box-shadow: 0 0 30px var(--accent); }
 
         .role {
-            font-size: 0.8rem;
-            font-weight: bold;
-            padding: 5px 15px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: inline-block;
-            color: white; /* 役職ラベルは常に白文字で見やすく */
+            font-size: 0.7rem; font-weight: 900; padding: 6px 18px;
+            border-radius: 30px; color: #fff; text-transform: uppercase;
+            margin-bottom: 15px; display: inline-block;
+            transform: translateZ(20px);
         }
+        .role-owner { background: linear-gradient(45deg, var(--owner), #ff7675); }
+        .role-admin { background: linear-gradient(45deg, var(--admin), #feca57); }
+        .role-dev { background: linear-gradient(45deg, var(--dev), #55efc4); }
 
-        .role-owner { background: var(--owner); }
-        .role-admin { background: var(--admin); }
-        .role-dev { background: var(--dev); }
+        .name { font-size: 1.8rem; font-weight: 900; margin: 15px 0; transform: translateZ(40px); }
+        .comment { font-size: 1rem; opacity: 0.8; line-height: 1.7; transform: translateZ(25px); }
 
-        .name { font-size: 1.5rem; font-weight: bold; margin: 10px 0; }
-        .comment { font-size: 0.9rem; opacity: 0.8; line-height: 1.6; }
     </style>
 </head>
-<body>
+<body class="dark-mode">
 
-    <button class="theme-toggle" onclick="toggleTheme()">SWITCH MODE</button>
+    <div class="nebula"></div>
+    <div class="theme-switch" onclick="toggleTheme()">
+        <div class="switch-dot"></div>
+    </div>
+    
     <canvas id="canvas"></canvas>
 
     <div class="content-layer">
         <section class="hero">
             <h1 class="logo">Dev.nexus</h1>
-            <p style="color: var(--accent); letter-spacing: 3px;">SLOW & COSMIC VIBES</p>
-            <a href="https://discord.gg" target="_blank" class="btn-join">Discordに参加する</a>
+            <div class="typewriter" id="typewriter"></div>
+            <a href="https://discord.gg" target="_blank" class="btn-join">JOIN THE NEXUS</a>
         </section>
 
         <section class="staff-section">
-            <h2 class="section-title">ADMINISTRATION</h2>
+            <h2 style="font-family: 'Orbitron', sans-serif; font-size: 2.5rem; margin-bottom: 60px;">CORE MEMBERS</h2>
             <div class="staff-grid">
-                <!-- Owner -->
-                <div class="staff-card">
-                    <div class="role role-owner">Owner</div><br>
+                
+                <div class="staff-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div class="role role-owner">Supreme Owner</div><br>
                     <img src="https://raw.githubusercontent.com" alt="bananeko345" class="avatar">
                     <div class="name">bananeko345</div>
-                    <div class="comment">鯖主頑張ります！</div>
+                    <div class="comment">「鯖主頑張ります！」<br>全ての創造の源点。</div>
                 </div>
 
-                <!-- Admin 1 -->
-                <div class="staff-card">
-                    <div class="role role-admin">Admin</div><br>
+                <div class="staff-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div class="role role-admin">Expert Admin</div><br>
                     <img src="https://raw.githubusercontent.com" alt="lapius" class="avatar">
                     <div class="name">lapius</div>
-                    <div class="comment">discordBOTやマイクラサーバーを作れます</div>
+                    <div class="comment">「discordBOTやマイクラサーバーを作れます」<br>技術の柱。</div>
                 </div>
 
-                <!-- Admin 2 -->
-                <div class="staff-card">
-                    <div class="role role-admin">Admin</div><br>
+                <div class="staff-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div class="role role-admin">Elite Admin</div><br>
                     <img src="https://raw.githubusercontent.com" alt="蓮斗" class="avatar">
                     <div class="name">蓮斗</div>
-                    <div class="comment">それなりに頑張ります</div>
+                    <div class="comment">「それなりに頑張ります」<br>運営の要石。</div>
                 </div>
 
-                <!-- Developer -->
-                <div class="staff-card">
-                    <div class="role role-dev">Developer</div><br>
+                <div class="staff-card" onmousemove="tilt(event, this)" onmouseleave="resetTilt(this)">
+                    <div class="role role-dev">Lead Developer</div><br>
                     <img src="https://raw.githubusercontent.com" alt="jion" class="avatar">
                     <div class="name">jion</div>
-                    <div class="comment">足を引っ張らないよう精一杯頑張ります</div>
+                    <div class="comment">「足を引っ張らないよう精一杯頑張ります」<br>革新のエンジニア。</div>
                 </div>
+
             </div>
         </section>
 
-        <footer style="padding: 40px; opacity: 0.5;">&copy; 2024 Dev.nexus Project</footer>
+        <footer style="padding: 60px; text-align: center; opacity: 0.4;">
+            <p>&copy; 2024 Dev.nexus | Designed for the Future</p>
+        </footer>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let width, height, particles;
-        
-        // スピードを大幅にダウン（10から3へ）
-        const BASE_SPEED = 3; 
+        const BASE_SPEED = 1.5; // さらにゆっくり、優雅に
 
+        // テーマ切替
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
         }
 
+        // タイピングエフェクト
+        const texts = ["EVERYONE CAN DEVELOP.", "LIMITLESS CREATIVITY.", "WELCOME TO DEV.NEXUS."];
+        let textIdx = 0; let charIdx = 0;
+        function type() {
+            const target = document.getElementById('typewriter');
+            if (charIdx < texts[textIdx].length) {
+                target.textContent += texts[textIdx].charAt(charIdx++);
+                setTimeout(type, 100);
+            } else {
+                setTimeout(() => {
+                    target.textContent = ""; charIdx = 0;
+                    textIdx = (textIdx + 1) % texts.length;
+                    type();
+                }, 2000);
+            }
+        }
+
+        // 3Dチルト
+        function tilt(e, card) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const xr = ((y - rect.height/2) / rect.height) * 20;
+            const yr = ((x - rect.width/2) / rect.width) * -20;
+            card.style.transform = `rotateX(${xr}deg) rotateY(${yr}deg)`;
+        }
+        function resetTilt(card) { card.style.transform = `rotateX(0) rotateY(0)`; }
+
+        // 星のアニメーション
         class Particle {
             constructor() { this.reset(); }
             reset() {
@@ -260,9 +254,9 @@
                 const px = (this.x / this.pz) * (width / 2) + width / 2;
                 const py = (this.y / this.pz) * (height / 2) + height / 2;
                 
-                const starColor = getComputedStyle(document.body).getPropertyValue('--star-color');
-                ctx.strokeStyle = starColor.replace('1)', `${1 - this.z/2000})`);
-                ctx.lineWidth = (2000 / this.z) * 0.5;
+                const rgb = getComputedStyle(document.body).getPropertyValue('--star-color');
+                ctx.strokeStyle = `rgba(${rgb}, ${1 - this.z/2000})`;
+                ctx.lineWidth = (2000 / this.z) * 0.8;
                 ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(sx, sy); ctx.stroke();
             }
         }
@@ -274,15 +268,13 @@
         }
 
         function animate() {
-            const bgColor = getComputedStyle(document.body).getPropertyValue('--bg-color');
-            ctx.fillStyle = bgColor;
-            ctx.fillRect(0, 0, width, height);
+            ctx.clearRect(0, 0, width, height);
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animate);
         }
 
         window.addEventListener('resize', init);
-        init(); animate();
+        init(); animate(); type();
     </script>
 </body>
 </html>

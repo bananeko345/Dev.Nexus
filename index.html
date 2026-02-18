@@ -1,171 +1,197 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev.nexus | Official</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+JP&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev.nexus | Official</title>
 
-        :root {
-            --bg: #050508;
-            --text: #ffffff;
-            --accent: #00f2ff;
-            --card: rgba(255, 255, 255, 0.03);
-            --transition-speed: 2.5s;
-        }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+JP&display=swap');
 
-        body.light-mode {
-            --bg: #f5f7fa;
-            --text: #1a1a2e;
-            --accent: #7000ff;
-            --card: rgba(0, 0, 0, 0.05);
-        }
+:root{
+    --bg:#050508;
+    --text:#ffffff;
+    --accent:#00f2ff;
+    --card:rgba(255,255,255,0.03);
+    --transition-speed:2.5s;
+}
 
-        * {
-            transition: background-color var(--transition-speed) ease, 
-                        color var(--transition-speed) ease, 
-                        border-color var(--transition-speed) ease,
-                        box-shadow var(--transition-speed) ease;
-        }
+body.light-mode{
+    --bg:#f5f7fa;
+    --text:#1a1a2e;
+    --accent:#7000ff;
+    --card:rgba(0,0,0,0.05);
+}
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            background-color: var(--bg);
-            font-family: 'Noto Sans JP', sans-serif;
-            color: var(--text);
-            overflow-x: hidden;
-        }
+*{
+    transition: background-color var(--transition-speed) ease,
+                color var(--transition-speed) ease,
+                border-color var(--transition-speed) ease,
+                box-shadow var(--transition-speed) ease;
+}
 
-        #starCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
+body,html{
+    margin:0;
+    padding:0;
+    width:100%;
+    background:var(--bg);
+    font-family:'Noto Sans JP',sans-serif;
+    color:var(--text);
+    overflow-x:hidden;
+}
 
-        .ui-layer {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-        }
+#starCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1;
+    pointer-events:none;
+}
 
-        .mode-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: var(--card);
-            border: 1px solid var(--accent);
-            color: var(--text);
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            letter-spacing: 1px;
-        }
+.ui-layer{
+    position:relative;
+    z-index:10;
+    width:100%;
+}
 
-        .hero {
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+.mode-toggle{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:100;
+    background:var(--card);
+    border:1px solid var(--accent);
+    color:var(--text);
+    padding:8px 16px;
+    border-radius:4px;
+    font-family:'Orbitron',sans-serif;
+    font-size:0.7rem;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    letter-spacing:1px;
+}
 
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 8vw, 4rem);
-            letter-spacing: 8px;
-            margin: 0;
-            background: linear-gradient(90deg, var(--accent), #7000ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.hero{
+    height:80vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
 
-        .subtitle {
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            opacity: 0.7;
-            margin-top: 10px;
-        }
+.logo{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(2rem,8vw,4rem);
+    letter-spacing:8px;
+    margin:0;
+    background:linear-gradient(90deg,var(--accent),#7000ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
 
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            text-align: center;
-            margin-bottom: 40px;
-            letter-spacing: 4px;
-        }
+.subtitle{
+    font-size:0.8rem;
+    letter-spacing:3px;
+    opacity:0.7;
+    margin-top:10px;
+}
 
-        .staff-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px 100px;
-        }
+.discord-btn{
+    display:inline-block;
+    padding:12px 30px;
+    background:#5865F2;
+    color:#fff;
+    text-decoration:none;
+    border-radius:4px;
+    font-size:0.8rem;
+    font-weight:bold;
+    margin-top:25px;
+}
+.discord-btn:hover{
+    background:#4752c4;
+    transform:scale(1.05);
+}
 
-        .card {
-            background: var(--card);
-            border: 1px solid rgba(128,128,128,0.1);
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
+.section-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:1.2rem;
+    text-align:center;
+    margin:80px 0 40px;
+    letter-spacing:4px;
+}
 
-        .card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-        }
+.about{
+    max-width:800px;
+    margin:0 auto;
+    padding:0 20px;
+    text-align:center;
+    line-height:1.8;
+    font-size:0.9rem;
+    opacity:0.85;
+}
 
-        .avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 15px;
-            border: 2px solid var(--accent);
-        }
+.staff-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:25px;
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 20px 100px;
+}
 
-        .role-tag {
-            font-size: 0.6rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            padding: 3px 10px;
-            border-radius: 4px;
-            color: #fff;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
+.card{
+    background:var(--card);
+    border:1px solid rgba(128,128,128,0.1);
+    border-radius:12px;
+    padding:25px;
+    text-align:center;
+    backdrop-filter:blur(10px);
+}
+.card:hover{
+    border-color:var(--accent);
+    transform:translateY(-5px);
+}
 
-        .owner { background: #e91e63; }
-        .admin { background: #ff9800; }
-        .dev { background: #00c853; }
+.avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:15px;
+    border:2px solid var(--accent);
+}
 
-        .name {
-            font-size: 1rem;
-            font-weight: 700;
-            margin: 5px 0;
-            font-family: 'Orbitron', sans-serif;
-        }
+.role-tag{
+    font-size:0.6rem;
+    font-weight:bold;
+    text-transform:uppercase;
+    padding:3px 10px;
+    border-radius:4px;
+    color:#fff;
+    margin-bottom:10px;
+    display:inline-block;
+}
 
-        .comment {
-            font-size: 0.75rem;
-            opacity: 0.8;
-            line-height: 1.5;
-            margin-top: 10px;
-        }
+.owner{background:#e91e63;}
+.admin{background:#ff9800;}
+.dev{background:#00c853;}
 
-    </style>
+.name{
+    font-size:1rem;
+    font-weight:700;
+    margin:5px 0;
+    font-family:'Orbitron',sans-serif;
+}
+
+.comment{
+    font-size:0.75rem;
+    opacity:0.8;
+    line-height:1.5;
+    margin-top:10px;
+}
+
+</style>
 </head>
 <body>
 
@@ -175,96 +201,101 @@
 <div class="ui-layer">
 
 <section class="hero">
-    <h1 class="logo">Dev.nexus</h1>
-    <p class="subtitle">Next Generation Development</p>
+<h1 class="logo">Dev.nexus</h1>
+<p class="subtitle">Next Generation Development</p>
+<a href="https://discord.gg/Uj2BWNQMaU" target="_blank" class="discord-btn">JOIN DISCORD</a>
 </section>
 
 <section>
-    <h2 class="section-title">運営一覧</h2>
+<h2 class="section-title">Dev.Nexusとは</h2>
+<div class="about">
+Dev.nexusとは誰でも開発が楽しめるDiscordサーバーです。<br>
+Discordサーバーでは仲間と合流することも可能です。
+</div>
+</section>
 
-    <div class="staff-grid">
+<section>
+<h2 class="section-title">運営一覧</h2>
 
-        <!-- Owner -->
-        <div class="card">
-            <span class="role-tag owner">Owner</span><br>
-            <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/efef73ab4177cb442fcb1d230859b29a.png" class="avatar" alt="bananeko345">
-            <div class="name">bananeko345</div>
-            <p class="comment">鯖主頑張ります！</p>
-        </div>
+<div class="staff-grid">
 
-        <!-- Admin lapius -->
-        <div class="card">
-            <span class="role-tag admin">Admin</span><br>
-            <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/b1bf0539049911d574cd953d9411dfc1.png" class="avatar" alt="lapius">
-            <div class="name">lapius</div>
-            <p class="comment">discordBOTやマイクラサーバーを作れます</p>
-        </div>
+<div class="card">
+<span class="role-tag owner">Owner</span><br>
+<img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/efef73ab4177cb442fcb1d230859b29a.png" class="avatar">
+<div class="name">bananeko345</div>
+<p class="comment">鯖主頑張ります！</p>
+</div>
 
-        <!-- Admin 蓮斗 -->
-        <div class="card">
-            <span class="role-tag admin">Admin</span><br>
-            <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/6384bf0c2fb2d77e76509989298bb213.png" class="avatar" alt="蓮斗">
-            <div class="name">蓮斗</div>
-            <p class="comment">それなりに頑張ります</p>
-        </div>
+<div class="card">
+<span class="role-tag admin">Admin</span><br>
+<img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/b1bf0539049911d574cd953d9411dfc1.png" class="avatar">
+<div class="name">lapius</div>
+<p class="comment">discordBOTやマイクラサーバーを作れます</p>
+</div>
 
-        <!-- Developer jion -->
-        <div class="card">
-            <span class="role-tag dev">Developer</span><br>
-            <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/1de3a8aa949d12fed1a591cd6586f903.png" class="avatar" alt="jion">
-            <div class="name">jion</div>
-            <p class="comment">足を引っ張らないよう精一杯頑張ります</p>
-        </div>
+<div class="card">
+<span class="role-tag admin">Admin</span><br>
+<img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/6384bf0c2fb2d77e76509989298bb213.png" class="avatar">
+<div class="name">蓮斗</div>
+<p class="comment">それなりに頑張ります</p>
+</div>
 
-    </div>
+<div class="card">
+<span class="role-tag dev">Developer</span><br>
+<img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/1de3a8aa949d12fed1a591cd6586f903.png" class="avatar">
+<div class="name">jion</div>
+<p class="comment">足を引っ張らないよう精一杯頑張ります</p>
+</div>
+
+</div>
 </section>
 
 </div>
 
 <script>
-const canvas = document.getElementById('starCanvas');
-const ctx = canvas.getContext('2d');
-let width, height, stars;
+const canvas=document.getElementById('starCanvas');
+const ctx=canvas.getContext('2d');
+let width,height,stars;
 
-function toggleMode() {
-    document.body.classList.toggle('light-mode');
+function toggleMode(){
+document.body.classList.toggle('light-mode');
 }
 
-class Star {
-    constructor() { this.init(); }
-    init() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.size = Math.random() * 1.5;
-        this.speed = Math.random() * 0.3 + 0.1;
-    }
-    draw() {
-        const color = getComputedStyle(document.body).getPropertyValue('--accent');
-        ctx.fillStyle = color;
-        ctx.globalAlpha = 0.5;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-    }
-    update() {
-        this.y -= this.speed;
-        if (this.y < 0) this.init();
-    }
+class Star{
+constructor(){this.init();}
+init(){
+this.x=Math.random()*width;
+this.y=Math.random()*height;
+this.size=Math.random()*1.5;
+this.speed=Math.random()*0.3+0.1;
+}
+draw(){
+const color=getComputedStyle(document.body).getPropertyValue('--accent');
+ctx.fillStyle=color;
+ctx.globalAlpha=0.5;
+ctx.beginPath();
+ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+ctx.fill();
+}
+update(){
+this.y-=this.speed;
+if(this.y<0)this.init();
+}
 }
 
-function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    stars = Array.from({ length: 150 }, () => new Star());
+function resize(){
+width=canvas.width=window.innerWidth;
+height=canvas.height=window.innerHeight;
+stars=Array.from({length:150},()=>new Star());
 }
 
-function animate() {
-    ctx.clearRect(0, 0, width, height);
-    stars.forEach(s => { s.update(); s.draw(); });
-    requestAnimationFrame(animate);
+function animate(){
+ctx.clearRect(0,0,width,height);
+stars.forEach(s=>{s.update();s.draw();});
+requestAnimationFrame(animate);
 }
 
-window.addEventListener('resize', resize);
+window.addEventListener('resize',resize);
 resize();
 animate();
 </script>

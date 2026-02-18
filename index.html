@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev.nexus | 次世代開発コミュニティ</title>
+    <style>
+        /* CSS: スタイル設定 */
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg-dark: #000510;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #ffffff;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: radial-gradient(circle, transparent 0%, rgba(0, 5, 16, 0.7) 100%);
+            pointer-events: none; /* 背景の星にマウス反応させるため */
+        }
+
+        .glass-card {
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            pointer-events: auto; /* カード内はクリック可能に */
+            max-width: 600px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            margin: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.4));
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #8892b0;
+            margin: 1.5rem 0 2.5rem;
+            line-height: 1.6;
+        }
+
+        .server-desc {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 2rem;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .btn-join {
+            display: inline-flex;
+            align-items: center;
+            padding: 18px 45px;
+            background: linear-gradient(45deg, #5865F2, #4752c4);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-join:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 15px 30px rgba(88, 101, 242, 0.5);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container">
+        <canvas id="starCanvas"></canvas>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="glass-card">
+            <h1 class="logo">Dev.nexus</h1>
+            <p class="tagline">境界を越え、コードで宇宙を繋ぐ。</p>
+            
+            <div class="server-desc">
+                🚀 <strong>オープン開発サーバー:</strong><br>
+                ここは誰もが自由に開発に参加し、実験し、共に成長できる「デジタル・ラボ」です。あなたのアイデアを止める壁はありません。
+            </div>
+
+            <a href="https://discord.gg" target="_blank" class="btn-join">
+                Discordサーバーに参加
+            </a>
+        </div>
+
+        <footer>&copy; 2024 Dev.nexus Community</footer>
+    </div>
+
+    <script>
+        // JS: 宇宙のアニメーション
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height, stars;
+        const starCount = 400;
+        const mouse = { x: null, y: null };
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            stars = [];
+
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    z: Math.random() * width, // 奥行き
+                    size: Math.random() * 1.5,
+                    color: `rgba(255, 255, 255, ${Math.random()})`
+                });
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = '#000510';
+            ctx.fillRect(0, 0, width, height);
+
+            const cx = width / 2;
+            const cy = height / 2;
+
+            stars.forEach(s => {
+                // 3Dから2Dへの投影的な動き
+                const x = (s.x - cx) * (width / s.z) + cx;
+                const y = (s.y - cy) * (width / s.z) + cy;
+                const size = s.size * (width / s.z);
+
+                // マウスとの距離で少し避ける動き
+                let dx = 0, dy = 0;
+                if (mouse.x) {
+                    dx = (mouse.x - cx) * 0.05;
+                    dy = (mouse.y - cy) * 0.05;
+                }
+
+                ctx.fillStyle = s.color;
+                ctx.beginPath();
+                ctx.arc(x + dx, y + dy, size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 前進（奥から手前へ）
+                s.z -= 0.8; 
+                if (s.z <= 0) {
+                    s.z = width;
+                    s.x = Math.random() * width;
+                    s.y = Math.random() * height;
+                }
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', init);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        init();
+        draw();
+    </script>
+</body>
+</html>

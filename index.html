@@ -3,214 +3,274 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev.nexus | 次世代開発コミュニティ</title>
+    <title>Dev.nexus | Official Site</title>
     <style>
-        /* CSS: スタイル設定 */
+        @import url('https://fonts.googleapis.com');
+
         :root {
-            --primary: #00f2ff;
-            --secondary: #7000ff;
-            --bg-dark: #000510;
+            --accent: #00f2ff;
+            --purple: #7000ff;
+            --owner: #ff4757;
+            --admin: #ffa502;
+            --dev: #2ed573;
+            --bg: #020205;
         }
 
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: var(--bg-dark);
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #ffffff;
+            background-color: var(--bg);
+            font-family: 'Exo 2', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
         }
 
-        #canvas-container {
+        /* 宇宙背景 */
+        #canvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+            z-index: 1;
         }
 
-        .main-wrapper {
+        .content-layer {
             position: relative;
             z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* メインビジュアル */
+        .hero {
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            background: radial-gradient(circle, transparent 0%, rgba(0, 5, 16, 0.7) 100%);
-            pointer-events: none; /* 背景の星にマウス反応させるため */
-        }
-
-        .glass-card {
-            padding: 3rem;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
             text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-            pointer-events: auto; /* カード内はクリック可能に */
-            max-width: 600px;
-            animation: fadeIn 1.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .logo {
-            font-size: clamp(3rem, 8vw, 5rem);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
             font-weight: 900;
-            letter-spacing: 0.1em;
-            margin: 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            letter-spacing: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.4));
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            color: #8892b0;
-            margin: 1.5rem 0 2.5rem;
-            line-height: 1.6;
-        }
-
-        .server-desc {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 1rem;
-            border-left: 4px solid var(--primary);
-            margin-bottom: 2rem;
-            text-align: left;
-            font-size: 0.95rem;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.5));
+            margin: 0;
         }
 
         .btn-join {
-            display: inline-flex;
-            align-items: center;
-            padding: 18px 45px;
-            background: linear-gradient(45deg, #5865F2, #4752c4);
+            margin-top: 2rem;
+            padding: 15px 40px;
+            background: #5865F2;
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+            pointer-events: auto;
         }
 
         .btn-join:hover {
-            transform: scale(1.1) translateY(-3px);
-            box-shadow: 0 15px 30px rgba(88, 101, 242, 0.5);
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #5865F2;
         }
 
-        footer {
-            position: absolute;
-            bottom: 20px;
+        /* 運営一覧セクション */
+        .staff-section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+        }
+
+        .staff-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .staff-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 3px solid var(--accent);
+            object-fit: cover;
+        }
+
+        .role {
             font-size: 0.8rem;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .role-owner { background: var(--owner); }
+        .role-admin { background: var(--admin); }
+        .role-dev { background: var(--dev); }
+
+        .name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .comment {
+            font-size: 0.9rem;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .hint {
             color: rgba(255,255,255,0.3);
+            margin: 20px 0;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
 
-    <div id="canvas-container">
-        <canvas id="starCanvas"></canvas>
-    </div>
+    <canvas id="canvas"></canvas>
 
-    <div class="main-wrapper">
-        <div class="glass-card">
+    <div class="content-layer">
+        <!-- Hero Section -->
+        <section class="hero">
             <h1 class="logo">Dev.nexus</h1>
-            <p class="tagline">境界を越え、コードで宇宙を繋ぐ。</p>
-            
-            <div class="server-desc">
-                🚀 <strong>オープン開発サーバー:</strong><br>
-                ここは誰もが自由に開発に参加し、実験し、共に成長できる「デジタル・ラボ」です。あなたのアイデアを止める壁はありません。
+            <p style="color: var(--accent); letter-spacing: 3px;">EXPERIMENT & CREATE</p>
+            <p class="hint">CLICK AND HOLD TO WARP</p>
+            <a href="https://discord.gg" target="_blank" class="btn-join">Discordに参加する</a>
+        </section>
+
+        <!-- Staff Section -->
+        <section class="staff-section">
+            <h2 class="section-title">ADMINISTRATION</h2>
+            <div class="staff-grid">
+                
+                <!-- Owner -->
+                <div class="staff-card">
+                    <div class="role role-owner">Owner</div><br>
+                    <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/efef73ab4177cb442fcb1d230859b29a.png" alt="bananeko345" class="avatar">
+                    <div class="name">bananeko345</div>
+                    <div class="comment">鯖主頑張ります！</div>
+                </div>
+
+                <!-- Admin 1 -->
+                <div class="staff-card">
+                    <div class="role role-admin">Admin</div><br>
+                    <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/b1bf0539049911d574cd953d9411dfc1.png" alt="lapius" class="avatar">
+                    <div class="name">lapius</div>
+                    <div class="comment">discordBOTやマイクラサーバーを作れます</div>
+                </div>
+
+                <!-- Admin 2 -->
+                <div class="staff-card">
+                    <div class="role role-admin">Admin</div><br>
+                    <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/6384bf0c2fb2d77e76509989298bb213.png" alt="蓮斗" class="avatar">
+                    <div class="name">蓮斗</div>
+                    <div class="comment">それなりに頑張ります</div>
+                </div>
+
+                <!-- Developer -->
+                <div class="staff-card">
+                    <div class="role role-dev">Developer</div><br>
+                    <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/1de3a8aa949d12fed1a591cd6586f903.png" alt="jion" class="avatar">
+                    <div class="name">jion</div>
+                    <div class="comment">足を引っ張らないよう精一杯頑張ります</div>
+                </div>
+
             </div>
+        </section>
 
-            <a href="https://discord.gg" target="_blank" class="btn-join">
-                Discordサーバーに参加
-            </a>
-        </div>
-
-        <footer>&copy; 2024 Dev.nexus Community</footer>
+        <footer style="padding: 40px; color: #444;">&copy; 2024 Dev.nexus Project</footer>
     </div>
 
     <script>
-        // JS: 宇宙のアニメーション
-        const canvas = document.getElementById('starCanvas');
+        const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
+        let width, height, particles;
+        let warpSpeed = 1;
+        let targetWarpSpeed = 1;
 
-        let width, height, stars;
-        const starCount = 400;
-        const mouse = { x: null, y: null };
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = (Math.random() - 0.5) * 2000;
+                this.y = (Math.random() - 0.5) * 2000;
+                this.z = Math.random() * 2000;
+                this.pz = this.z;
+            }
+            update() {
+                this.pz = this.z;
+                this.z -= 10 * warpSpeed;
+                if (this.z < 1) this.reset();
+            }
+            draw() {
+                const sx = (this.x / this.z) * (width / 2) + width / 2;
+                const sy = (this.y / this.z) * (height / 2) + height / 2;
+                const px = (this.x / this.pz) * (width / 2) + width / 2;
+                const py = (this.y / this.pz) * (height / 2) + height / 2;
+                ctx.strokeStyle = `rgba(0, 242, 255, ${1 - this.z/2000})`;
+                ctx.lineWidth = (2000 / this.z) * 0.5;
+                ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(sx, sy); ctx.stroke();
+            }
+        }
 
         function init() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
-            stars = [];
-
-            for (let i = 0; i < starCount; i++) {
-                stars.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    z: Math.random() * width, // 奥行き
-                    size: Math.random() * 1.5,
-                    color: `rgba(255, 255, 255, ${Math.random()})`
-                });
-            }
+            particles = Array.from({ length: 500 }, () => new Particle());
         }
 
-        function draw() {
-            ctx.fillStyle = '#000510';
+        function animate() {
+            warpSpeed += (targetWarpSpeed - warpSpeed) * 0.05;
+            ctx.fillStyle = `rgba(2, 2, 5, ${targetWarpSpeed > 1 ? 0.2 : 1})`;
             ctx.fillRect(0, 0, width, height);
-
-            const cx = width / 2;
-            const cy = height / 2;
-
-            stars.forEach(s => {
-                // 3Dから2Dへの投影的な動き
-                const x = (s.x - cx) * (width / s.z) + cx;
-                const y = (s.y - cy) * (width / s.z) + cy;
-                const size = s.size * (width / s.z);
-
-                // マウスとの距離で少し避ける動き
-                let dx = 0, dy = 0;
-                if (mouse.x) {
-                    dx = (mouse.x - cx) * 0.05;
-                    dy = (mouse.y - cy) * 0.05;
-                }
-
-                ctx.fillStyle = s.color;
-                ctx.beginPath();
-                ctx.arc(x + dx, y + dy, size, 0, Math.PI * 2);
-                ctx.fill();
-
-                // 前進（奥から手前へ）
-                s.z -= 0.8; 
-                if (s.z <= 0) {
-                    s.z = width;
-                    s.x = Math.random() * width;
-                    s.y = Math.random() * height;
-                }
-            });
-
-            requestAnimationFrame(draw);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
         }
 
+        window.addEventListener('mousedown', () => targetWarpSpeed = 15);
+        window.addEventListener('mouseup', () => targetWarpSpeed = 1);
         window.addEventListener('resize', init);
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
-
-        init();
-        draw();
+        init(); animate();
     </script>
 </body>
 </html>

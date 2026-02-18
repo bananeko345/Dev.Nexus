@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dev.nexus | Official</title>
     <style>
-        @import url('https://fonts.googleapis.com');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+JP&display=swap');
 
         :root {
             --bg: #050508;
             --text: #ffffff;
             --accent: #00f2ff;
             --card: rgba(255, 255, 255, 0.03);
-            --transition-speed: 2.5s; /* じわ〜っと変わる速度 */
+            --transition-speed: 2.5s;
         }
 
         body.light-mode {
@@ -22,7 +22,6 @@
             --card: rgba(0, 0, 0, 0.05);
         }
 
-        /* 滑らかな遷移のコア設定 */
         * {
             transition: background-color var(--transition-speed) ease, 
                         color var(--transition-speed) ease, 
@@ -31,7 +30,9 @@
         }
 
         body, html {
-            margin: 0; padding: 0; width: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
             background-color: var(--bg);
             font-family: 'Noto Sans JP', sans-serif;
             color: var(--text);
@@ -39,183 +40,234 @@
         }
 
         #starCanvas {
-            position: fixed; top: 0; left: 0; z-index: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
             pointer-events: none;
         }
 
-        .ui-layer { position: relative; z-index: 10; width: 100%; }
+        .ui-layer {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+        }
 
-        /* スイッチボタン */
         .mode-toggle {
-            position: fixed; top: 20px; right: 20px; z-index: 100;
-            background: var(--card); border: 1px solid var(--accent);
-            color: var(--text); padding: 8px 16px; border-radius: 4px;
-            font-family: 'Orbitron', sans-serif; font-size: 0.7rem;
-            cursor: pointer; backdrop-filter: blur(10px);
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--card);
+            border: 1px solid var(--accent);
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
             letter-spacing: 1px;
         }
 
         .hero {
-            height: 80vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 8vw, 4rem); /* 文字を小さめに調整 */
-            letter-spacing: 8px; margin: 0;
+            font-size: clamp(2rem, 8vw, 4rem);
+            letter-spacing: 8px;
+            margin: 0;
             background: linear-gradient(90deg, var(--accent), #7000ff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .subtitle { font-size: 0.8rem; letter-spacing: 3px; opacity: 0.7; margin-top: 10px; }
+        .subtitle {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
 
-        /* 運営一覧 */
         .section-title {
-            font-family: 'Orbitron', sans-serif; font-size: 1.2rem;
-            text-align: center; margin-bottom: 40px; letter-spacing: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 4px;
         }
 
         .staff-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px; max-width: 1000px; margin: 0 auto; padding: 0 20px 100px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 100px;
         }
 
         .card {
-            background: var(--card); border: 1px solid rgba(128,128,128,0.1);
-            border-radius: 12px; padding: 25px; text-align: center;
+            background: var(--card);
+            border: 1px solid rgba(128,128,128,0.1);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
             backdrop-filter: blur(10px);
         }
 
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
 
         .avatar {
-            width: 90px; height: 90px; border-radius: 50%;
-            object-fit: cover; margin-bottom: 15px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
             border: 2px solid var(--accent);
-            background: #000; /* 読み込み前の背景 */
         }
 
         .role-tag {
-            font-size: 0.6rem; font-weight: bold; text-transform: uppercase;
-            padding: 3px 10px; border-radius: 4px; color: #fff; margin-bottom: 10px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 4px;
+            color: #fff;
+            margin-bottom: 10px;
             display: inline-block;
         }
+
         .owner { background: #e91e63; }
         .admin { background: #ff9800; }
         .dev { background: #00c853; }
 
-        .name { font-size: 1rem; font-weight: 700; margin: 5px 0; font-family: 'Orbitron', sans-serif; }
-        .comment { font-size: 0.75rem; opacity: 0.8; line-height: 1.5; margin-top: 10px; }
-
-        .discord-btn {
-            display: inline-block; padding: 12px 30px; background: #5865F2;
-            color: #fff; text-decoration: none; border-radius: 4px;
-            font-size: 0.8rem; font-weight: bold; margin-top: 20px;
-            transition: 0.3s;
+        .name {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 5px 0;
+            font-family: 'Orbitron', sans-serif;
         }
-        .discord-btn:hover { background: #4752c4; transform: scale(1.05); }
+
+        .comment {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
 
     </style>
 </head>
 <body>
 
-    <button class="mode-toggle" onclick="toggleMode()">SWITCH MODE</button>
-    <canvas id="starCanvas"></canvas>
+<button class="mode-toggle" onclick="toggleMode()">SWITCH MODE</button>
+<canvas id="starCanvas"></canvas>
 
-    <div class="ui-layer">
-        <section class="hero">
-            <h1 class="logo">Dev.nexus</h1>
-            <p class="subtitle">Next Generation Development</p>
-            <a href="https://discord.gg" target="_blank" class="discord-btn">JOIN DISCORD</a>
-        </section>
+<div class="ui-layer">
 
-        <section>
-            <h2 class="section-title">MANAGEMENT</h2>
-            <div class="staff-grid">
-                <!-- Owner -->
-                <div class="card">
-                    <span class="role-tag owner">Owner</span><br>
-                    <img src="https://raw.githubusercontent.com" class="avatar" alt="bananeko345">
-                    <div class="name">bananeko345</div>
-                    <p class="comment">鯖主頑張ります！</p>
-                </div>
+<section class="hero">
+    <h1 class="logo">Dev.nexus</h1>
+    <p class="subtitle">Next Generation Development</p>
+</section>
 
-                <!-- Admin 1 -->
-                <div class="card">
-                    <span class="role-tag admin">Admin</span><br>
-                    <img src="https://raw.githubusercontent.com" class="avatar" alt="lapius">
-                    <div class="name">lapius</div>
-                    <p class="comment">discordBOTやマイクラサーバーを作れます</p>
-                </div>
+<section>
+    <h2 class="section-title">運営一覧</h2>
 
-                <!-- Admin 2 -->
-                <div class="card">
-                    <span class="role-tag admin">Admin</span><br>
-                    <img src="https://raw.githubusercontent.com" class="avatar" alt="蓮斗">
-                    <div class="name">蓮斗</div>
-                    <p class="comment">それなりに頑張ります</p>
-                </div>
+    <div class="staff-grid">
 
-                <!-- Developer -->
-                <div class="card">
-                    <span class="role-tag dev">Developer</span><br>
-                    <img src="https://raw.githubusercontent.com" class="avatar" alt="jion">
-                    <div class="name">jion</div>
-                    <p class="comment">足を引っ張らないよう精一杯頑張ります</p>
-                </div>
-            </div>
-        </section>
+        <!-- Owner -->
+        <div class="card">
+            <span class="role-tag owner">Owner</span><br>
+            <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/efef73ab4177cb442fcb1d230859b29a.png" class="avatar" alt="bananeko345">
+            <div class="name">bananeko345</div>
+            <p class="comment">鯖主頑張ります！</p>
+        </div>
+
+        <!-- Admin lapius -->
+        <div class="card">
+            <span class="role-tag admin">Admin</span><br>
+            <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/b1bf0539049911d574cd953d9411dfc1.png" class="avatar" alt="lapius">
+            <div class="name">lapius</div>
+            <p class="comment">discordBOTやマイクラサーバーを作れます</p>
+        </div>
+
+        <!-- Admin 蓮斗 -->
+        <div class="card">
+            <span class="role-tag admin">Admin</span><br>
+            <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/6384bf0c2fb2d77e76509989298bb213.png" class="avatar" alt="蓮斗">
+            <div class="name">蓮斗</div>
+            <p class="comment">それなりに頑張ります</p>
+        </div>
+
+        <!-- Developer jion -->
+        <div class="card">
+            <span class="role-tag dev">Developer</span><br>
+            <img src="https://raw.githubusercontent.com/bananeko345/Dev.Nexus/refs/heads/main/1de3a8aa949d12fed1a591cd6586f903.png" class="avatar" alt="jion">
+            <div class="name">jion</div>
+            <p class="comment">足を引っ張らないよう精一杯頑張ります</p>
+        </div>
+
     </div>
+</section>
 
-    <script>
-        const canvas = document.getElementById('starCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, stars;
+</div>
 
-        function toggleMode() {
-            document.body.classList.toggle('light-mode');
-        }
+<script>
+const canvas = document.getElementById('starCanvas');
+const ctx = canvas.getContext('2d');
+let width, height, stars;
 
-        class Star {
-            constructor() {
-                this.init();
-            }
-            init() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 1.5;
-                this.speed = Math.random() * 0.3 + 0.1; // ゆっくりした動き
-            }
-            draw() {
-                const color = getComputedStyle(document.body).getPropertyValue('--accent');
-                ctx.fillStyle = color;
-                ctx.globalAlpha = 0.5;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            update() {
-                this.y -= this.speed;
-                if (this.y < 0) this.init();
-            }
-        }
+function toggleMode() {
+    document.body.classList.toggle('light-mode');
+}
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            stars = Array.from({ length: 150 }, () => new Star());
-        }
+class Star {
+    constructor() { this.init(); }
+    init() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 1.5;
+        this.speed = Math.random() * 0.3 + 0.1;
+    }
+    draw() {
+        const color = getComputedStyle(document.body).getPropertyValue('--accent');
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+    update() {
+        this.y -= this.speed;
+        if (this.y < 0) this.init();
+    }
+}
 
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            stars.forEach(s => { s.update(); s.draw(); });
-            requestAnimationFrame(animate);
-        }
+function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    stars = Array.from({ length: 150 }, () => new Star());
+}
 
-        window.addEventListener('resize', resize);
-        resize();
-        animate();
-    </script>
+function animate() {
+    ctx.clearRect(0, 0, width, height);
+    stars.forEach(s => { s.update(); s.draw(); });
+    requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', resize);
+resize();
+animate();
+</script>
+
 </body>
 </html>

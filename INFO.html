@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INFO | Dev.nexus</title>
+
+<style>
+@import url('https://fonts.googleapis.com');
+
+:root{
+    --bg:#050508;
+    --text:#ffffff;
+    --accent:#00f2ff;
+    --card:rgba(255,255,255,0.03);
+    --transition-speed:2.5s;
+}
+
+body.light-mode{
+    --bg:#f5f7fa;
+    --text:#1a1a2e;
+    --accent:#7000ff;
+    --card:rgba(0,0,0,0.05);
+}
+
+*{
+    transition: background-color var(--transition-speed) ease,
+                color var(--transition-speed) ease,
+                border-color var(--transition-speed) ease,
+                box-shadow var(--transition-speed) ease;
+}
+
+body,html{
+    margin:0;
+    padding:0;
+    width:100%;
+    background:var(--bg);
+    font-family:'Noto Sans JP',sans-serif;
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+#starCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1;
+    pointer-events:none;
+}
+
+.ui-layer{
+    position:relative;
+    z-index:10;
+    width:100%;
+}
+
+.mode-toggle{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:100;
+    background:var(--card);
+    border:1px solid var(--accent);
+    color:var(--text);
+    padding:8px 16px;
+    border-radius:4px;
+    font-family:'Orbitron',sans-serif;
+    font-size:0.7rem;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    letter-spacing:1px;
+}
+
+/* Header Section */
+.header-section {
+    padding: 100px 20px 40px;
+    text-align: center;
+}
+
+.logo-link {
+    font-family: 'Orbitron', sans-serif;
+    text-decoration: none;
+    color: var(--accent);
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    opacity: 0.8;
+    transition: 0.3s;
+}
+.logo-link:hover { opacity: 1; }
+
+.page-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    margin: 10px 0;
+    letter-spacing: 5px;
+    background: linear-gradient(90deg, var(--accent), #7000ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Info List */
+.info-container {
+    max-width: 800px;
+    margin: 40px auto 100px;
+    padding: 0 20px;
+}
+
+.info-item {
+    background: var(--card);
+    border: 1px solid rgba(128,128,128,0.1);
+    border-left: 4px solid var(--accent);
+    margin-bottom: 20px;
+    padding: 25px;
+    border-radius: 0 12px 12px 0;
+    backdrop-filter: blur(10px);
+    transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.info-item:hover {
+    transform: translateX(10px);
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.06);
+}
+
+.info-date {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+    opacity: 0.8;
+}
+
+.info-tag {
+    font-size: 0.65rem;
+    font-weight: bold;
+    background: var(--accent);
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 10px;
+    vertical-align: middle;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.info-content {
+    font-size: 0.95rem;
+    margin: 10px 0 0;
+    line-height: 1.7;
+    opacity: 0.9;
+}
+
+.back-home {
+    display: inline-block;
+    margin-top: 50px;
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    opacity: 0.5;
+    transition: 0.3s;
+}
+.back-home:hover {
+    opacity: 1;
+    color: var(--accent);
+}
+
+footer {
+    text-align: center;
+    padding-bottom: 50px;
+}
+</style>
+</head>
+<body>
+
+<button class="mode-toggle" onclick="toggleMode()">SWITCH MODE</button>
+<canvas id="starCanvas"></canvas>
+
+<div class="ui-layer">
+
+    <header class="header-section">
+        <a href="index.html" class="logo-link">Dev.nexus</a>
+        <h1 class="page-title">INFORMATION</h1>
+    </header>
+
+    <main class="info-container">
+
+        <!-- お知らせ項目ここから -->
+        <div class="info-item">
+            <span class="info-date">2024.05.24</span>
+            <div>
+                <span class="info-tag">SYSTEM</span>
+                <p class="info-content">公式サイトにINFORMATIONページを実装しました。最新の更新情報はこちらで確認いただけます。</p>
+            </div>
+        </div>
+
+        <div class="info-item">
+            <span class="info-date">2024.05.20</span>
+            <div>
+                <span class="info-tag">UPDATE</span>
+                <p class="info-content">運営一覧に「ふにゃくん」がDeveloperとして加入しました。Webページ制作の強化を予定しています。</p>
+            </div>
+        </div>
+
+        <div class="info-item">
+            <span class="info-date">2024.05.10</span>
+            <div>
+                <span class="info-tag">SERVER</span>
+                <p class="info-content">Discordサーバーのメインロビーをリニューアルしました。新しい自己紹介チャンネルを設置しました。</p>
+            </div>
+        </div>
+
+        <div class="info-item">
+            <span class="info-date">2024.05.01</span>
+            <div>
+                <span class="info-tag">EVENT</span>
+                <p class="info-content">Dev.nexus プロジェクトが正式にスタートしました。次世代の開発コミュニティを目指します。</p>
+            </div>
+        </div>
+        <!-- お知らせ項目ここまで -->
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-home">BACK TO HOME</a>
+        </div>
+    </main>
+
+    <footer>
+        <p style="font-size: 0.7rem; opacity: 0.3;">&copy; Dev.nexus Official</p>
+    </footer>
+
+</div>
+
+<script>
+const canvas=document.getElementById('starCanvas');
+const ctx=canvas.getContext('2d');
+let width,height,stars;
+
+function toggleMode(){
+    document.body.classList.toggle('light-mode');
+}
+
+class Star{
+    constructor(){this.init();}
+    init(){
+        this.x=Math.random()*width;
+        this.y=Math.random()*height;
+        this.size=Math.random()*1.5;
+        this.speed=Math.random()*0.3+0.1;
+    }
+    draw(){
+        const color=getComputedStyle(document.body).getPropertyValue('--accent');
+        ctx.fillStyle=color;
+        ctx.globalAlpha=0.5;
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill();
+    }
+    update(){
+        this.y-=this.speed;
+        if(this.y<0)this.init();
+    }
+}
+
+function resize(){
+    width=canvas.width=window.innerWidth;
+    height=canvas.height=window.innerHeight;
+    stars=Array.from({length:100},()=>new Star());
+}
+
+function animate(){
+    ctx.clearRect(0,0,width,height);
+    stars.forEach(s=>{s.update();s.draw();});
+    requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize',resize);
+resize();
+animate();
+</script>
+
+</body>
+</html>

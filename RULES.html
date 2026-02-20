@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RULES | Dev.nexus</title>
+
+<style>
+@import url('https://fonts.googleapis.com');
+
+:root{
+    --bg:#050508;
+    --text:#ffffff;
+    --accent:#00f2ff;
+    --card:rgba(255,255,255,0.03);
+    --transition-speed:2.5s;
+}
+
+body.light-mode{
+    --bg:#f5f7fa;
+    --text:#1a1a2e;
+    --accent:#7000ff;
+    --card:rgba(0,0,0,0.05);
+}
+
+*{
+    transition: background-color var(--transition-speed) ease,
+                color var(--transition-speed) ease,
+                border-color var(--transition-speed) ease,
+                box-shadow var(--transition-speed) ease;
+}
+
+body,html{
+    margin:0;
+    padding:0;
+    width:100%;
+    background:var(--bg);
+    font-family:'Noto Sans JP',sans-serif;
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+#starCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1;
+    pointer-events:none;
+}
+
+.ui-layer{
+    position:relative;
+    z-index:10;
+    width:100%;
+}
+
+.mode-toggle{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:100;
+    background:var(--card);
+    border:1px solid var(--accent);
+    color:var(--text);
+    padding:8px 16px;
+    border-radius:4px;
+    font-family:'Orbitron',sans-serif;
+    font-size:0.7rem;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    letter-spacing:1px;
+}
+
+.header-section {
+    padding: 100px 20px 40px;
+    text-align: center;
+}
+
+.logo-link {
+    font-family: 'Orbitron', sans-serif;
+    text-decoration: none;
+    color: var(--accent);
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+    opacity: 0.8;
+    transition: 0.3s;
+}
+.logo-link:hover { opacity: 1; }
+
+.page-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    margin: 10px 0;
+    letter-spacing: 5px;
+    background: linear-gradient(90deg, var(--accent), #7000ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.rules-container {
+    max-width: 800px;
+    margin: 40px auto 100px;
+    padding: 0 20px;
+}
+
+.rule-card {
+    background: var(--card);
+    border: 1px solid rgba(128,128,128,0.1);
+    margin-bottom: 25px;
+    padding: 30px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+.rule-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+}
+
+.rule-num {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--accent);
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.rule-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(128,128,128,0.2);
+    padding-bottom: 10px;
+}
+
+.rule-text {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    opacity: 0.85;
+}
+
+.back-home {
+    display: inline-block;
+    margin-top: 50px;
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    opacity: 0.5;
+    transition: 0.3s;
+}
+.back-home:hover {
+    opacity: 1;
+    color: var(--accent);
+}
+
+footer {
+    text-align: center;
+    padding-bottom: 50px;
+}
+</style>
+</head>
+<body>
+
+<button class="mode-toggle" onclick="toggleMode()">SWITCH MODE</button>
+<canvas id="starCanvas"></canvas>
+
+<div class="ui-layer">
+
+    <header class="header-section">
+        <a href="index.html" class="logo-link">Dev.nexus</a>
+        <h1 class="page-title">SERVER RULES</h1>
+    </header>
+
+    <main class="rules-container">
+
+        <!-- Rule 01 -->
+        <div class="rule-card">
+            <span class="rule-num">RULE 01</span>
+            <div class="rule-title">荒らし行為の禁止</div>
+            <p class="rule-text">
+                サーバーの運営を妨げるあらゆる荒らし行為を禁止します。
+                スパム送信、権限の悪用、過度なメンション、またはサーバーの安定性を損なう行為が確認された場合、即座に処罰の対象となります。
+            </p>
+        </div>
+
+        <!-- Rule 02 -->
+        <div class="rule-card">
+            <span class="rule-num">RULE 02</span>
+            <div class="rule-title">不快な行為の禁止</div>
+            <p class="rule-text">
+                他者が嫌がる言動や、誹謗中傷、差別的な発言を禁止します。
+                開発を楽しむすべてのメンバーが、心地よく過ごせる環境づくりにご協力ください。
+            </p>
+        </div>
+
+        <!-- Rule 03 -->
+        <div class="rule-card">
+            <span class="rule-num">RULE 03</span>
+            <div class="rule-title">運営の指示への遵守</div>
+            <p class="rule-text">
+                サーバー内では、運営チーム（Owner / Admin）の指示に従ってください。
+                ルールに明文化されていない事象についても、運営の判断により対応を行う場合があります。
+            </p>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-home">BACK TO HOME</a>
+        </div>
+    </main>
+
+    <footer>
+        <p style="font-size: 0.7rem; opacity: 0.3;">&copy; Dev.nexus Official</p>
+    </footer>
+
+</div>
+
+<script>
+const canvas=document.getElementById('starCanvas');
+const ctx=canvas.getContext('2d');
+let width,height,stars;
+
+function toggleMode(){
+    document.body.classList.toggle('light-mode');
+}
+
+class Star{
+    constructor(){this.init();}
+    init(){
+        this.x=Math.random()*width;
+        this.y=Math.random()*height;
+        this.size=Math.random()*1.5;
+        this.speed=Math.random()*0.3+0.1;
+    }
+    draw(){
+        const color=getComputedStyle(document.body).getPropertyValue('--accent');
+        ctx.fillStyle=color;
+        ctx.globalAlpha=0.5;
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill();
+    }
+    update(){
+        this.y-=this.speed;
+        if(this.y<0)this.init();
+    }
+}
+
+function resize(){
+    width=canvas.width=window.innerWidth;
+    height=canvas.height=window.innerHeight;
+    stars=Array.from({length:100},()=>new Star());
+}
+
+function animate(){
+    ctx.clearRect(0,0,width,height);
+    stars.forEach(s=>{s.update();s.draw();});
+    requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize',resize);
+resize();
+animate();
+</script>
+
+</body>
+</html>
